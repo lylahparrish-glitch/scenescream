@@ -1,70 +1,76 @@
 body {
-  margin: 0;
   font-family: "Poppins", sans-serif;
   background: linear-gradient(to bottom right, #fbd3ff, #d8c7ff);
   color: #333;
+  margin: 0;
   min-height: 100vh;
-  overflow-x: hidden;
 }
 
 .top-bar {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
+  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 30px;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.05);
-  position: sticky;
-  top: 0;
-  z-index: 10;
 }
 
-.logo-text { font-weight: 700; font-size: 1.5rem; color: #6b33cc; }
-.logo-heart { color: #ff69b4; font-size: 1.3rem; margin-right: 5px; }
+.logo {
+  font-weight: 700;
+  color: #6b33cc;
+  font-size: 1.4em;
+}
 
-.nav-bar { display: flex; gap: 10px; }
-.nav-btn {
+.nav button {
   border: none;
-  background: rgba(255, 255, 255, 0.8);
+  background: #ffd9f9;
   border-radius: 20px;
-  padding: 6px 14px;
+  margin: 0 5px;
+  padding: 6px 12px;
   cursor: pointer;
-  transition: 0.3s;
-  font-weight: 500;
 }
-.nav-btn:hover { background: #ffccf9; transform: scale(1.05); }
-
-.page { display: none; padding: 30px; }
-.page.active { display: block; }
 
 .card {
   background: rgba(255, 255, 255, 0.85);
   border-radius: 15px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  margin: 20px auto;
   padding: 20px;
-  max-width: 600px;
+  margin: 20px auto;
+  max-width: 500px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
 }
-.btn-pill {
-  background: linear-gradient(to right, #d59aff, #ffb6e6);
-  border: none;
-  border-radius: 30px;
-  color: white;
-  padding: 10px 20px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.btn-pill:hover { transform: scale(1.05); }
-.hidden { display: none; }
+
 textarea, input, select {
   width: 100%;
-  margin: 0.5em 0;
-  padding: 0.7em;
-  border-radius: 8px;
-  border: 1px solid #e8aef2;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
   font-size: 1em;
 }
-.profile-pic { width: 100px; height: 100px; border-radius: 50%; }
 
+button {
+  background: linear-gradient(to right, #d59aff, #ffb6e6);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.secondary {
+  background: #fff;
+  color: #6b33cc;
+  border: 1px solid #d59aff;
+}
+
+.hidden {
+  display: none;
+}
+
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
