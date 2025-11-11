@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SceneScream 🌸</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <h1>🌸 SceneScream</h1>
 
+  <!-- Authentication Section -->
   <section id="authSection">
     <h2 id="authTitle">Sign In</h2>
-    <input id="email" type="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
+    <input id="email" type="email" placeholder="Email" />
+    <input id="password" type="password" placeholder="Password" />
     <p id="error" class="error-msg"></p>
 
     <button id="loginBtn">Sign In</button>
     <button id="signupBtn">Create Account</button>
-    <br>
+    <br />
     <button id="forgotBtn" class="link-btn">Forgot Password?</button>
   </section>
 
+  <!-- Feed Section -->
   <section id="feedSection" class="hidden">
     <h2>Welcome to SceneScream 💖</h2>
     <textarea id="postText" placeholder="What are you watching or feeling?"></textarea>
@@ -34,7 +36,7 @@
   <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore-compat.js"></script>
 
-  <!-- Your JS -->
+  <!-- Main JS -->
   <script src="main.js"></script>
 </body>
 </html>
