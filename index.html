@@ -1,270 +1,74 @@
- <!DOCTYPE html>
- <html lang="en">
- <head>
-   <meta charset="UTF-8" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <title>SceneScream 🌈</title>
-   <link rel="stylesheet" href="style.css" />
- </head>
- 
- <body>
-   <!-- Floating doodles -->
-   <div class="doodle doodle-1">★</div>
-   <div class="doodle doodle-2">♡</div>
-   <div class="doodle doodle-3">✧</div>
-   <div class="doodle doodle-4">☁</div>
-   <div class="doodle doodle-5">❀</div>
- 
-   <header class="top-bar">
-     <div class="logo"><span class="logo-heart">♡</span><span class="logo-text">SceneScream</span></div>
-     <nav class="nav-bar">
-       <button onclick="showPage('home')" class="nav-btn">Home</button>
-+      <button onclick="showPage('watch')" class="nav-btn">Watch Party</button>
-       <button onclick="showPage('friends')" class="nav-btn">Friends</button>
-       <button onclick="showPage('profile')" class="nav-btn">Profile</button>
-       <button onclick="showPage('search')" class="nav-btn">Search</button>
-       <button id="loginNav" class="nav-btn">Sign In</button>
-       <button id="logoutNav" class="nav-btn hidden">Logout</button>
-     </nav>
-   </header>
- 
-   <main>
-     <!-- HOME -->
-     <section id="page-home" class="page active">
-       <h1>Home Feed 🌸</h1>
--      <div class="card soft" id="composer">
-+      <div id="welcomeCard" class="card soft">
-+        <p>Welcome to <strong>SceneScream</strong> – sign in to share what you're watching, cheer on friends, and join live episode chats!</p>
-+        <button class="btn-pill" id="homeSignInBtn">Jump to Sign In</button>
-+      </div>
-+      <div id="composer" class="card soft hidden">
-+        <h2>Share a moment</h2>
-         <textarea id="postText" placeholder="What are you watching or feeling?"></textarea>
--        <button id="postBtn" class="btn-pill">Post</button>
-+        <div class="composer-actions">
-+          <div class="composer-tags">
-+            <label for="postShowTitle">Tag a show or movie (optional)</label>
-+            <input type="text" id="postShowTitle" placeholder="Show or movie title" />
-+            <div class="season-episode-row">
-+              <input type="number" id="postSeason" min="1" placeholder="Season" />
-+              <input type="number" id="postEpisode" min="1" placeholder="Episode" />
-+            </div>
-+          </div>
-+          <button id="postBtn" class="btn-pill">Post</button>
-+        </div>
-       </div>
-       <div id="feedContainer" class="feed-scroll"></div>
-     </section>
- 
-+    <!-- WATCH PARTY -->
-+    <section id="page-watch" class="page">
-+      <h1>Watch Party 🎬</h1>
-+      <div class="card soft watch-card">
-+        <div class="watch-setup">
-+          <div>
-+            <label for="watchType">What are you watching?</label>
-+            <select id="watchType">
-+              <option value="show">TV Show</option>
-+              <option value="movie">Movie</option>
-+            </select>
-+          </div>
-+          <div>
-+            <label for="watchTitle">Title</label>
-+            <input type="text" id="watchTitle" placeholder="Show or movie name" />
-+          </div>
-+          <div class="season-episode-row" id="watchEpisodeBlock">
-+            <div>
-+              <label for="watchSeason">Season</label>
-+              <input type="number" id="watchSeason" min="1" />
-+            </div>
-+            <div>
-+              <label for="watchEpisode">Episode</label>
-+              <input type="number" id="watchEpisode" min="1" />
-+            </div>
-+          </div>
-+          <div class="watch-controls">
-+            <button id="startWatchBtn" class="btn-pill">Start Timer</button>
-+            <div class="watch-timer" id="watchTimerDisplay">00:00</div>
-+          </div>
-+          <p class="watch-hint">Pick the episode you're watching and press start. Comments appear right when they happened.</p>
-+        </div>
-+        <div class="live-session" id="activeSessionInfo" hidden>
-+          <h2 id="activeSessionTitle">No session yet</h2>
-+          <p id="activeSessionMeta"></p>
-+        </div>
-+        <div class="comment-composer">
-+          <textarea id="watchCommentText" placeholder="Add your thoughts for this exact moment" rows="3"></textarea>
-+          <button id="watchCommentBtn" class="btn-pill">Send Comment</button>
-+        </div>
-+      </div>
-+      <div class="card soft" id="liveCommentsCard">
-+        <h2>Live Reactions</h2>
-+        <div id="watchCommentsList" class="watch-comments"></div>
-+      </div>
-+      <div class="card soft" id="watchSessionsCard">
-+        <h2>Recently Active Sessions</h2>
-+        <div id="watchSessionHistory"></div>
-+      </div>
-+    </section>
-+
-     <!-- PROFILE -->
-     <section id="page-profile" class="page">
-       <h1>Your Profile 💖</h1>
-       <div class="card soft profile-card">
--        <img id="profilePic" class="profile-pic" src="https://via.placeholder.com/100" alt="Profile Picture">
--        <input type="file" id="profilePicInput" accept="image/*" style="display:none;">
--        <button id="changePicBtn" class="btn-pill small">Change Picture</button>
--        <h2 id="profileName">Display Name</h2>
--        <p id="profileUsername">@username</p>
-+        <div class="profile-header">
-+          <img id="profilePic" class="profile-pic" src="https://via.placeholder.com/120" alt="Profile Picture" />
-+          <input type="file" id="profilePicInput" accept="image/*" hidden />
-+          <button id="changePicBtn" class="btn-pill small">Change Picture</button>
-+        </div>
-+        <label for="profileNameInput">Display Name</label>
-+        <input type="text" id="profileNameInput" placeholder="Display Name" />
-+
-+        <label for="profileUsernameInput">Username</label>
-+        <div class="username-row">
-+          <input type="text" id="profileUsernameInput" placeholder="Username" />
-+          <span id="usernameChangeInfo" class="info-text"></span>
-+        </div>
- 
--        <label>Gender</label>
-+        <label for="profileGender">Gender</label>
-         <select id="profileGender">
-           <option value="">Select</option>
-           <option>Female</option>
-           <option>Male</option>
-           <option>Nonbinary</option>
-           <option>Other</option>
-+          <option>Prefer not to say</option>
-         </select>
- 
--        <label>Date of Birth</label>
--        <input type="date" id="profileDob">
-+        <label for="profileDob">Date of Birth</label>
-+        <input type="date" id="profileDob" />
- 
--        <label>Status</label>
--        <input type="text" id="profileStatus" placeholder="What's your vibe?">
-+        <label for="profileStatus">Status</label>
-+        <input type="text" id="profileStatus" placeholder="What's your vibe?" />
- 
--        <label>Favorites</label>
--        <input type="text" id="profileFavorites" placeholder="Favorite shows or artists">
-+        <label for="profileFavorites">Favorites</label>
-+        <input type="text" id="profileFavorites" placeholder="Favorite shows or artists" />
- 
--        <label>Theme Color</label>
--        <input type="color" id="profileThemeColor" value="#fbd3ff">
-+        <label for="profileThemeColor">Theme Color</label>
-+        <input type="color" id="profileThemeColor" value="#fbd3ff" />
- 
--        <label>Bio</label>
-+        <label for="bioInput">Bio</label>
-         <textarea id="bioInput" placeholder="Write your bio..."></textarea>
-+
-         <button id="saveProfileBtn" class="btn-pill">Save Profile</button>
-+        <p id="profileMessage" class="info-text"></p>
-+      </div>
-+      <div class="card soft" id="myPostsCard">
-+        <h2>Your Posts</h2>
-+        <div id="myPostsContainer"></div>
-       </div>
-     </section>
- 
-     <!-- FRIENDS -->
-     <section id="page-friends" class="page">
--      <h1>Friends 👯‍♀️</h1>
--      <div id="friendsList"></div>
-+      <h1>Community 👯‍♀️</h1>
-+      <div class="card soft">
-+        <p>Discover other fans and peek at their latest posts.</p>
-+        <div id="friendsList"></div>
-+      </div>
-     </section>
- 
-     <!-- SEARCH -->
-     <section id="page-search" class="page">
-       <h1>Search Users 🔍</h1>
--      <input type="text" id="searchInput" placeholder="Search by name or username...">
--      <button id="searchBtn" class="btn-pill">Search</button>
--      <div id="searchResults"></div>
-+      <div class="card soft search-card">
-+        <input type="text" id="searchInput" placeholder="Search by name or username..." />
-+        <button id="searchBtn" class="btn-pill">Search</button>
-+        <div id="searchResults"></div>
-+      </div>
-+    </section>
-+
-+    <!-- PUBLIC PROFILE -->
-+    <section id="page-public-profile" class="page">
-+      <div class="card soft profile-card">
-+        <button class="btn-link" id="backToFeed">← Back</button>
-+        <div class="profile-header">
-+          <img id="publicProfilePic" class="profile-pic" src="https://via.placeholder.com/120" alt="Profile Picture" />
-+        </div>
-+        <h2 id="publicProfileName">Name</h2>
-+        <p id="publicProfileUsername">@username</p>
-+        <p id="publicProfileStatus" class="info-text"></p>
-+        <p id="publicProfileBio"></p>
-+        <p id="publicProfileFavorites" class="info-text"></p>
-+      </div>
-+      <div class="card soft">
-+        <h2 id="publicPostsTitle">Posts</h2>
-+        <div id="publicProfilePosts"></div>
-+      </div>
-     </section>
- 
-     <!-- AUTH -->
-     <section id="page-auth" class="page">
-       <div class="card soft auth-card">
-         <h1 id="authTitle">Sign In ✨</h1>
--        <input type="email" id="authEmail" placeholder="Email">
--        <input type="password" id="authPassword" placeholder="Password">
--        <div id="signupFields" style="display:none;">
--          <input type="text" id="authDisplayName" placeholder="Display Name">
--          <input type="text" id="authUsername" placeholder="Username">
-+        <div id="signInFields">
-+          <input type="email" id="authEmail" placeholder="Email" />
-+          <input type="password" id="authPassword" placeholder="Password" />
-+        </div>
-+        <div id="signupFields" class="auth-extra hidden">
-+          <input type="text" id="authDisplayName" placeholder="Full Name" />
-+          <input type="text" id="authUsername" placeholder="Username" />
-           <select id="authGender">
-             <option value="">Gender</option>
-             <option>Female</option>
-             <option>Male</option>
-             <option>Nonbinary</option>
-             <option>Other</option>
-+            <option>Prefer not to say</option>
-           </select>
--          <input type="date" id="authDob">
-+          <input type="date" id="authDob" />
-         </div>
-         <p id="authMessage" class="error-msg"></p>
-         <button id="authSubmitBtn" class="btn-pill">Sign In</button>
-         <button id="toggleAuthMode" class="btn-link">Don’t have an account? Sign up</button>
-       </div>
-+      <div class="card soft auth-card" id="verificationCard">
-+        <h2>Email Verification</h2>
-+        <p>Already signed up? Enter the verification code that was sent to your email to activate your account.</p>
-+        <input type="email" id="verifyEmail" placeholder="Email" />
-+        <input type="text" id="verifyCode" placeholder="Verification code" />
-+        <button id="verifyBtn" class="btn-pill">Verify Email</button>
-+        <p id="verifyMessage" class="info-text"></p>
-+      </div>
-     </section>
-   </main>
- 
--  <!-- Firebase -->
--  <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-app-compat.js"></script>
--  <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-auth-compat.js"></script>
--  <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore-compat.js"></script>
--  <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-storage-compat.js"></script>
-   <script src="main.js"></script>
- </body>
- </html>
--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SceneScream 🌈</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="top-bar">
+    <div class="logo">♡ SceneScream</div>
+    <nav>
+      <button id="navHome">Home</button>
+      <button id="navProfile">Profile</button>
+      <button id="navAuth">Sign In</button>
+      <button id="navLogout" class="hidden">Logout</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="page-home" class="page active">
+      <h1>Home Feed 🌸</h1>
+      <div id="composer" class="card hidden">
+        <textarea id="postText" placeholder="Share a thought or show…"></textarea>
+        <button id="postBtn">Post</button>
+      </div>
+      <div id="feed"></div>
+    </section>
+
+    <!-- PROFILE -->
+    <section id="page-profile" class="page hidden">
+      <h1>Your Profile 💖</h1>
+      <div class="card">
+        <img id="profilePic" class="profile-pic" src="https://via.placeholder.com/100" />
+        <input type="file" id="profilePicInput" accept="image/*" hidden />
+        <button id="changePicBtn">Change Picture</button>
+        <input id="displayName" placeholder="Display name" />
+        <input id="status" placeholder="Status message" />
+        <button id="saveProfileBtn">Save Profile</button>
+      </div>
+    </section>
+
+    <!-- AUTH -->
+    <section id="page-auth" class="page hidden">
+      <div class="card">
+        <h1 id="authTitle">Sign In ✨</h1>
+        <input id="authEmail" type="email" placeholder="Email" />
+        <input id="authPassword" type="password" placeholder="Password" />
+        <div id="signupExtra" class="hidden">
+          <input id="authName" placeholder="Full name" />
+          <input id="authUsername" placeholder="Username" />
+          <input id="authDob" type="date" />
+          <select id="authGender">
+            <option value="">Gender</option>
+            <option>Female</option><option>Male</option>
+            <option>Nonbinary</option><option>Other</option>
+          </select>
+        </div>
+        <p id="authMsg"></p>
+        <button id="authSubmit">Sign In</button>
+        <button id="toggleAuth">No account? Sign up</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore-compat.js"></script>
+
+  <script src="main.js"></script>
+</body>
+</html>
