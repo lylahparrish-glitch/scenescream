@@ -1,7 +1,4 @@
-// SceneScream JavaScript
-console.log("🎀 SceneScream loaded");
-
-// Firebase setup
+// Initialize Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDlMtxLSC8VsN-9NnonRo2SrsGcGH5BF5U",
   authDomain: "video-comments-fe3e6.firebaseapp.com",
@@ -11,71 +8,132 @@ const firebaseConfig = {
   appId: "1:361268366755:web:c0c7efccedda5ae4b95e16"
 };
 firebase.initializeApp(firebaseConfig);
+
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-// Page switching
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
+// DOM Elements
+const authPage = document.getElementById("authPage");
+const homePage = document.getElementById("homePage");
+const profilePage = document.getElementById("profilePage");
+const signupBtn = document.getElementById("signupBtn");
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+
+// Sign Up
+signupBtn.addEventListener("click", async () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const name = document.getElementById("name").value;
+  const username = document.getElementById("username").value;
+  const dob = document.getElementById("dob").value;
+  const gender = document.getElementById("gender").value;
+
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(email, password);
+    await cred.user.sendEmailVerification();
+    await db.collection("users").doc(cred.user.uid).set({
+      name, username, dob, gender, email, createdAt: new Date(),
+      profilePic: "", verified: false
+    });
+    alert("Verification email sent! Please verify and log in.");
+  } catch (e) {
+    alert(e.message);
+  }
+});
+
+// Login
+loginBtn.addEventListener("click", async () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  try {
+    const cred = await auth.signInWithEmailAndPassword(email, password);
+    if (!cred.user.emailVerified) {
+      alert("Please verify your email before logging in.");
+      auth.signOut();
+      return;
+    }
+    loadHome();
+  } catch (e) {
+    alert(e.message);
+  }
+});
+
+// Auth State
+auth.onAuthStateChanged(user => {
+  if (user && user.emailVerified) {
+    showPage("home");
+    loadProfile();
+    loadFeed();
+  } else {
+    showPage("auth");
+  }
+});
+
+logoutBtn.addEventListener("click", () => auth.signOut());
+
+// Show Page
+function showPage(p) {
+  document.querySelectorAll(".page").forEach(pg => pg.classList.add("hidden"));
+  if (p === "home") homePage.classList.remove("hidden");
+  if (p === "profile") profilePage.classList.remove("hidden");
+  if (p === "auth") authPage.classList.remove("hidden");
 }
 
-// Auth handling
-const loginNav = document.getElementById("loginNav");
-const logoutNav = document.getElementById("logoutNav");
-const authEmail = document.getElementById("authEmail");
-const authPassword = document.getElementById("authPassword");
-const authDisplayName = document.getElementById("authDisplayName");
-const authUsername = document.getElementById("authUsername");
-const authGender = document.getElementById("authGender");
-const authDob = document.getElementById("authDob");
-const authSubmitBtn = document.getElementById("authSubmitBtn");
-const toggleAuthMode = document.getElementById("toggleAuthMode");
-const signupFields = document.getElementById("signupFields");
-const authMessage = document.getElementById("authMessage");
+// Load Profile
+async function loadProfile() {
+  const user = auth.currentUser;
+  if (!user) return;
+  const doc = await db.collection("users").doc(user.uid).get();
+  const data = doc.data();
+  document.getElementById("profileName").textContent = data.name;
+  document.getElementById("profileUsername").textContent = "@" + data.username;
+  document.getElementById("profileEmail").textContent = data.email;
+  if (data.profilePic) document.getElementById("profilePic").src = data.profilePic;
+}
 
-let isSignUpMode = false;
-toggleAuthMode.addEventListener("click", () => {
-  isSignUpMode = !isSignUpMode;
-  signupFields.style.display = isSignUpMode ? "block" : "none";
-  authSubmitBtn.textContent = isSignUpMode ? "Sign Up" : "Sign In";
+// Upload Profile Pic
+document.getElementById("profilePicInput").addEventListener("change", async e => {
+  const file = e.target.files[0];
+  const user = auth.currentUser;
+  const ref = storage.ref(`profilePics/${user.uid}.jpg`);
+  await ref.put(file);
+  const url = await ref.getDownloadURL();
+  await db.collection("users").doc(user.uid).update({ profilePic: url });
+  loadProfile();
 });
 
-authSubmitBtn.addEventListener("click", async () => {
-  const email = authEmail.value;
-  const password = authPassword.value;
-  try {
-    if (isSignUpMode) {
-      const cred = await auth.createUserWithEmailAndPassword(email, password);
-      await db.collection("users").doc(cred.user.uid).set({
-        email,
-        displayName: authDisplayName.value,
-        username: authUsername.value,
-        gender: authGender.value,
-        dob: authDob.value
-      });
-      alert("Account created! Please sign in.");
-      isSignUpMode = false;
-      signupFields.style.display = "none";
-    } else {
-      await auth.signInWithEmailAndPassword(email, password);
-      showPage("home");
-    }
-  } catch (err) {
-    authMessage.textContent = err.message;
+// Post
+document.getElementById("postBtn").addEventListener("click", async () => {
+  const text = document.getElementById("postText").value;
+  const img = document.getElementById("postImg").files[0];
+  const user = auth.currentUser;
+  const ref = db.collection("posts");
+  let imgUrl = "";
+  if (img) {
+    const sref = storage.ref(`posts/${user.uid}/${Date.now()}.jpg`);
+    await sref.put(img);
+    imgUrl = await sref.getDownloadURL();
   }
+  await ref.add({
+    uid: user.uid, text, imgUrl, createdAt: new Date()
+  });
+  document.getElementById("postText").value = "";
+  document.getElementById("postImg").value = "";
+  loadFeed();
 });
 
-logoutNav.addEventListener("click", () => auth.signOut());
-
-auth.onAuthStateChanged(user => {
-  if (user) {
-    loginNav.classList.add("hidden");
-    logoutNav.classList.remove("hidden");
-  } else {
-    loginNav.classList.remove("hidden");
-    logoutNav.classList.add("hidden");
-  }
-});
-
+// Load Feed
+async function loadFeed() {
+  const feed = document.getElementById("feed");
+  feed.innerHTML = "";
+  const snap = await db.collection("posts").orderBy("createdAt", "desc").get();
+  snap.forEach(doc => {
+    const p = doc.data();
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `<p>${p.text}</p>${p.imgUrl ? `<img src="${p.imgUrl}" style="max-width:100%;border-radius:10px;">` : ""}`;
+    feed.appendChild(div);
+  });
+}
