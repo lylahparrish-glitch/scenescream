@@ -1,36 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SceneScream 🌸</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>SceneScream 🌸</h1>
-  </header>
+  <h1>🌸 SceneScream</h1>
 
-  <main>
-    <!-- Auth Section -->
-    <section id="auth">
-      <h2 id="authTitle">Sign In</h2>
-      <input id="email" type="email" placeholder="Email" />
-      <input id="password" type="password" placeholder="Password" />
-      <p id="error" class="error-msg"></p>
-      <button id="loginBtn">Sign In</button>
-      <button id="signupBtn">Create Account</button>
-    </section>
+  <section id="authSection">
+    <h2 id="authTitle">Sign In</h2>
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <p id="error" class="error-msg"></p>
 
-    <!-- Feed Section -->
-    <section id="feed" class="hidden">
-      <h2>Home Feed</h2>
-      <textarea id="postText" placeholder="What’s on your mind?"></textarea>
-      <button id="postBtn">Post</button>
-      <button id="logoutBtn">Logout</button>
-      <div id="posts"></div>
-    </section>
-  </main>
+    <button id="loginBtn">Sign In</button>
+    <button id="signupBtn">Create Account</button>
+    <br>
+    <button id="forgotBtn" class="link-btn">Forgot Password?</button>
+  </section>
+
+  <section id="feedSection" class="hidden">
+    <h2>Welcome to SceneScream 💖</h2>
+    <textarea id="postText" placeholder="What are you watching or feeling?"></textarea>
+    <button id="postBtn">Post</button>
+    <button id="logoutBtn">Logout</button>
+    <div id="posts"></div>
+  </section>
 
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-app-compat.js"></script>
