@@ -12,16 +12,19 @@
   </header>
 
   <main>
+    <!-- Auth Section -->
     <section id="auth">
       <h2 id="authTitle">Sign In</h2>
       <input id="email" type="email" placeholder="Email" />
       <input id="password" type="password" placeholder="Password" />
-      <p id="error"></p>
+      <p id="error" class="error-msg"></p>
       <button id="loginBtn">Sign In</button>
       <button id="signupBtn">Create Account</button>
     </section>
 
+    <!-- Feed Section -->
     <section id="feed" class="hidden">
+      <h2>Home Feed</h2>
       <textarea id="postText" placeholder="What’s on your mind?"></textarea>
       <button id="postBtn">Post</button>
       <button id="logoutBtn">Logout</button>
@@ -29,12 +32,12 @@
     </section>
   </main>
 
-  <!-- Firebase -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore-compat.js"></script>
 
+  <!-- Your JS -->
   <script src="main.js"></script>
 </body>
 </html>
-
