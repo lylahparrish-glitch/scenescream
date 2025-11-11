@@ -1,1 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SceneScream 🌸</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>SceneScream 🌸</h1>
+  </header>
+
+  <main>
+    <section id="auth">
+      <h2 id="authTitle">Sign In</h2>
+      <input id="email" type="email" placeholder="Email" />
+      <input id="password" type="password" placeholder="Password" />
+      <p id="error"></p>
+      <button id="loginBtn">Sign In</button>
+      <button id="signupBtn">Create Account</button>
+    </section>
+
+    <section id="feed" class="hidden">
+      <textarea id="postText" placeholder="What’s on your mind?"></textarea>
+      <button id="postBtn">Post</button>
+      <button id="logoutBtn">Logout</button>
+      <div id="posts"></div>
+    </section>
+  </main>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore-compat.js"></script>
+
+  <script src="main.js"></script>
+</body>
+</html>
 
